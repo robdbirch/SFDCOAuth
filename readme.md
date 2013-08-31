@@ -1,4 +1,4 @@
-# Salesforce OAuth 2.0 authentication
+# Salesforce OAuth 2.0
 This is a based on [joshbirk/Flex-RESTKit](https://github.com/joshbirk/Flex-RESTKit). 
 
 FlexBuilder 4.7 was used
@@ -7,13 +7,13 @@ FlexBuilder 4.7 was used
 * FLEX SDK 4.6.0
 
 This version supports standard _agent_ based OAuth.
-There are configuration facilities for working with multipled orgs during development and testing.
+There are configuration facilities for working with multiple orgs during development and testing.
 
 ## Usage  OAuth
     
     private function login():void {
         // Identify which sfdc org to use in the configuration
-        OAuthRemoteServices.sfdc  = "orgDemo12";
+        OAuthConnection.sfdcOrgConfigParam  = "orgDemo12";
 	    this.oauth = OAuthConnection.login(win.stage,
 						   new mx.rpc.AsyncResponder(loginSuccess, logingError));
     }
@@ -22,7 +22,7 @@ There are configuration facilities for working with multipled orgs during develo
         // Do Stuff
     }
      
-## Quick REST Examples
+## REST Examples
 
 There is a REST helper method to return a *new* rest object that holds a reference to the oauth.
 
@@ -61,25 +61,27 @@ There is a REST helper method to return a *new* rest object that holds a referen
                  "Contact",
                  new AsyncResponder(handleSuccess, handleError));
         
-__Check com.force.http.rest.RESTConnection for more delete/files/Chatter Posts request interfaces__
+*Check `com.force.http.rest.RESTConnection` for more delete/files/Chatter Posts request interfaces*
      
-There are property methods on the `OAuthConnection` in order to get Salesforce.com specific information
+There are property methods on the `OAuthConnection` in order to get Salesforce.com specific OAuth information
 
         public function get sfdcId():String 
         public function get sfdcOrg():String
         public function get token():String 
         public function get instanceUrl():String 
-        public function usingRemoteService():Boolean
         public function get idUrl():String
         public function get authIssuedAt():int
         public function get authSignature():String
         public function get authScope():String
 
 ## OAuth Configuration
-[joshbirk/Flex-RESTKit](https://github.com/joshbirk/Flex-RESTKit) Had a nice constructor where you passed in the 
-client key, client secret, and callback. For now that's gone. Configuration parmater objects (`OAuthConfigParam `) representing Salesforce Orgs OAuth paramaters are registed them with a `OAuthConfig` object. Some example stubb code is provided below
+[joshbirk/Flex-RESTKit](https://github.com/joshbirk/Flex-RESTKit) Had a nice constructor for passing in the 
+client key, client secret, and callback. For now that's gone and one or more `OAuthConfigParam` objects and  a `OAuthConfig` object are used. A configuration parameter object (`OAuthConfigParam `) represents a Salesforce Org and it's associated `OAuth` paramaters. One or more `OAuthConfigParam` objects are registered with the `OAuthConfig` object. 
+
+
+Example stubb code is provided below:
  
-1. Create a config builder and place your SFDC Orgs. You may wish to __add that class to your .gitignore__ file so it doesn't get checked into the git repository.
+1. Create a config builder and initialize your SFDC Orgs in it. You may wish to __add that class to your .gitignore__ file so it doesn't get checked into the git repository.
 
             package com.force.oauth
             {
@@ -129,7 +131,7 @@ client key, client secret, and callback. For now that's gone. Configuration parm
             	for (i=0; i < e.arguments.length; i++) {
             		trace("Command line arg: " + i + " value: " + e.arguments[i]);  
             		if (e.arguments[i] == "-s") { 
-            			OAuthRemoteServices.sfdcServer = e.arguments[i+1];
+            			OAuthConnection.sfdcOrgConfigParam  = e.arguments[i+1];
             		}
             	}
 

@@ -12,7 +12,6 @@
 	<fx:Script>
 		<![CDATA[
 			import com.force.oauth.OAuthConnection;
-			import com.force.oauth.OAuthRemoteServices;
 			import com.force.oauth.OAuthConfigBuilder;
 			
 			import mx.controls.Alert;
@@ -37,15 +36,7 @@
 				for (i=0; i < e.arguments.length; i++) {
 					trace("Command line arg: " + i + " value: " + e.arguments[i]);  
 					if (e.arguments[i] == "-s") { 
-						OAuthRemoteServices.sfdcServer = e.arguments[i+1];
-					} else if (e.arguments[i] == "-a") {
-						OAuthRemoteServices.oAuthType = e.arguments[i+1];
-					} else if (e.arguments[i] == "-r") {
-						if (e.arguments[i+1].toLowerCase() == "true") {
-							OAuthRemoteServices.remoteService = true;
-						} else {
-							OAuthRemoteServices.remoteService = false;
-						}
+						OAuthConnection.sfdcOrgConfigParam = e.arguments[i+1]
 					}
 				}
 				initApp();
@@ -58,8 +49,9 @@
 			}
 			
 			private function initApp():void {
-				if ( OAuthRemoteServices.sfdcServer == null ) {
-					OAuthRemoteServices.sfdcServer = "rdbdemo";
+				// If no IDE or command line arguments have selected an org set a default
+				if ( OAuthConnection.sfdcOrgConfigParam == null ) {
+					OAuthConnection.sfdcOrgConfigParam  = "rdbdemo";
 				}
 				login();
 			}

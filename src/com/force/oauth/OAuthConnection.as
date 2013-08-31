@@ -50,6 +50,14 @@ package com.force.oauth
 		internal var loginClientCallback:IResponder;
 		internal var refreshClientCallback:IResponder;
 		
+		public static function set sfdcOrgConfigParam(configParamName:String):void {
+			OAuthRemoteServices.sfdcServer = configParamName
+		}
+		
+		public static function get sfdcOrgConfigParam():String {
+			return OAuthRemoteServices.sfdcServer
+		}
+		
 		public function OAuthConnection(_publicKey:String, _privateKey:String, _redirectURI:String) {
 			this.publicKey = _publicKey;
 			this.privateKey = _privateKey;
