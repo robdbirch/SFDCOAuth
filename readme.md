@@ -24,7 +24,7 @@ There are configuration facilities for working with multiple orgs during develop
      
 ## REST Examples
 
-There is a REST helper method to return a *new* rest object that holds a reference to the oauth.
+There is a REST helper method that will return a *new* rest object that holds a reference to the oauth.
 
 	 rest = this.oauth.rest();
      
@@ -106,7 +106,7 @@ Example stubb code is provided below:
             			param.clientKey = '3M...';
             			param.clientSecret = '9...';
             			param.callbackUrl = 'https://a.com/sfdc_oauth_callback';
-            			param.state = 'eid-12demo';
+            			param.state = 'eid-22demo';
             			OAuthConfig.registerConfig(param);
                         .
                         .
@@ -147,6 +147,7 @@ Also see the contained example test application for details.
 ## Changes from [joshbirk/Flex-RESTKit](https://github.com/joshbirk/Flex-RESTKit)
 * Native `actionscirpt 3.0 JSON` support
 * Removal of Utils
+* Removal of Timer based refresh
 
 
 #### OAuth Token Refresh 
@@ -155,10 +156,10 @@ OAuth tokens expire. The OAuth specification *recommends* using an `expires_in` 
          [{ message: 'Session expired or invalid', errorCode: 'INVALID_SESSION_ID'}]
 
 #####  Refresh  [joshbirk/Flex-RESTKit](https://github.com/joshbirk/Flex-RESTKit) 
-The *joshbirk* implementation attempted to avoid this response by asking for a new refresh token every *10 minutes*. I wanted to cut down  on this network chatter a bit.  It seems the Salesforce.com OAuth token may last for many hours depending on time of day, day of the week and possibliy other parameters determined by SFDC. 
+The *joshbirk* implementation attempted to avoid receiving this response by asking for a new refresh token if the token was over *10 minutes* old. If the token was over 10 minutes old it would do a refresh request for a new one. I wanted to cut down  on this network chatter.  It seems the Salesforce.com OAuth token may last for many hours depending on time of day, day of the week and possibliy other parameters determined by SFDC. 
 
 ##### New Refresh Implementation
-This will only ask for a fresh token when the token has expired. When the token expires it will automatically call for a refreshed token. 
+This implementation will only ask for a fresh token when the token has expired. When the token expires it will automatically call for a refreshed token. 
 
 ## Miscellaneous
 
